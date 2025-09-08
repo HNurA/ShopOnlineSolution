@@ -1,10 +1,12 @@
 ﻿@page "/ProductDetails/{Id:int}"
+@using ShopOnline.Models.Dtos
 @attribute [StreamRendering]
 @inherits ProductDetailsBase
 
 @if (Product == null && ErrorMessage == null)
 {
     <LoadingDots Message="Loading product details" />
+    <DisplaySpinner/>
 }
 else if (ErrorMessage != null)
 {
@@ -25,6 +27,15 @@ else
                     @Product.Price.ToString("C")&nbsp;(@Product.Qty items in stock)
                 </b>
             </p>
+            <div>
+                <button class="btn btn-success"
+                @onclick = "() => (AddToCart_Click(new CartItemToAddDto{
+                    CartId = HardCoded.CartId,
+                    ProductId = Product.Id,
+                    Qty = 1
+                }))">
+                <b>Add to Cart</b></button>
+            </div>
         </div>
     </div>
 }

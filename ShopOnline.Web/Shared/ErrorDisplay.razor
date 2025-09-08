@@ -1,0 +1,21 @@
+﻿<div class="alert alert-danger @CssClass" role="alert">
+    <div class="d-flex align-items-center">
+        <i class="@IconClass me-2"></i>
+        <div>
+            <h5 class="alert-heading mb-1">@Title</h5>
+            <p class="mb-0">@Message</p>
+            @if (!string.IsNullOrEmpty(Details))
+            {
+                <small class="text-muted d-block mt-1">@Details</small>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Message { get; set; } = "An error occurred";
+    [Parameter] public string Title { get; set; } = "Error";
+    [Parameter] public string? Details { get; set; }
+    [Parameter] public string CssClass { get; set; } = "";
+    [Parameter] public string IconClass { get; set; } = "bi bi-exclamation-triangle-fill";
+}
