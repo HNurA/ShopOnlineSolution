@@ -26,6 +26,7 @@ namespace ShopOnline.Web.Components.Pages
         {
             try
             {
+                await Task.Delay(3000);
                 Product = await ProductService.GetItem(Id);
             }
             catch (Exception ex)
@@ -33,16 +34,7 @@ namespace ShopOnline.Web.Components.Pages
                 ErrorMessage = ex.Message;
             }
         }
-        protected async Task AddToCartHandler(int productId)
-        {
-            var cartItemToAddDto = new CartItemToAddDto
-            {
-                CartId = HardCoded.CartId,
-                ProductId = productId,
-                Qty = 1
-            };
-            await AddToCart_Click(cartItemToAddDto);
-        }
+
         protected async Task AddToCart_Click(CartItemToAddDto cartItemToAddDto)
         {
             try
