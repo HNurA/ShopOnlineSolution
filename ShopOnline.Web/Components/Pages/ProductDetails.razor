@@ -1,12 +1,16 @@
 ﻿@page "/ProductDetails/{Id:int}"
 @using ShopOnline.Models.Dtos
 @attribute [StreamRendering]
+@rendermode InteractiveServer
 @inherits ProductDetailsBase
+
+@*<button @onclick="() => Console.WriteLine(1111)">test</button>*@
 
 @if (Product == null && ErrorMessage == null)
 {
-    <LoadingDots Message="Loading product details" />
-    <DisplaySpinner/>
+    <div class="text-center mt-3">
+        <DisplaySpinner />
+    </div>
 }
 else if (ErrorMessage != null)
 {
@@ -28,13 +32,14 @@ else
                 </b>
             </p>
             <div>
-                <button class="btn btn-success"
+                <button class="btn btn-success" type="button"
                 @onclick = "() => (AddToCart_Click(new CartItemToAddDto{
                     CartId = HardCoded.CartId,
                     ProductId = Product.Id,
                     Qty = 1
                 }))">
                 <b>Add to Cart</b></button>
+                
             </div>
         </div>
     </div>

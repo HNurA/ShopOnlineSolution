@@ -1,0 +1,54 @@
+﻿@implements IDisposable
+@inject IShoppingCartService shoppingCartService
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<a href="ShoppingCart" class="btn btn-info">
+    <i class="oi oi-cart"></i>&nbsp;Cart
+    <span class="badge bg-dark">@shoppingCartItemCount</span>
+</a>
+
+@code {
+    private int shoppingCartItemCount = 0;
+    private bool _isDisposed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (_isDisposed) return;
+
+        shoppingCartService.OnShoppingCartChanged += ShoppingCartChanged;
+
+        // İlk yüklemede cart count'u al
+        try
+        {
+            var cartItems = await shoppingCartService.GetItems(HardCoded.UserId);
+            shoppingCartItemCount = cartItems?.Sum(item => item.Qty) ?? 0;
+        }
+        catch (Exception)
+        {
+            shoppingCartItemCount = 0;
+        }
+    }
+
+    protected async void ShoppingCartChanged(int totalQty)
+    {
+        if (_isDisposed) return;
+
+        shoppingCartItemCount = totalQty;
+
+        await InvokeAsync(() =>
+        {
+            if (!_isDisposed)
+            {
+                StateHasChanged();
+            }
+        });
+    }
+
+    void IDisposable.Dispose()
+    {
+        if (_isDisposed) return;
+
+        _isDisposed = true;
+        shoppingCartService.OnShoppingCartChanged -= ShoppingCartChanged;
+    }
+}

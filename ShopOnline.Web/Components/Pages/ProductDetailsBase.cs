@@ -35,11 +35,15 @@ namespace ShopOnline.Web.Components.Pages
             }
         }
 
-        protected async Task AddToCart_Click(CartItemToAddDto cartItemToAddDto)
+        public async Task AddToCart_Click(CartItemToAddDto cartItemToAddDto)
         {
             try
             {
                 var cartItemDto = await ShoppingCartService.AddItem(cartItemToAddDto);
+
+                // *** EKLENEN: Item eklendikten sonra cart changed event'ini tetikle ***
+                await UpdateCartCount();
+
                 NavigationManager.NavigateTo("/ShoppingCart");
             }
             catch (Exception)
@@ -47,5 +51,23 @@ namespace ShopOnline.Web.Components.Pages
                 //Log Exception
             }
         }
+
+        // *** EKLENEN: Cart count'u güncellemek için yeni method ***
+        private async Task UpdateCartCount()
+        {
+            try
+            {
+                var cartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
+                int totalQuantity = cartItems?.Sum(item => item.Qty) ?? 0;
+
+                // Cart changed event'ini tetikle
+                ShoppingCartService.RaiseEventOnShoppingCartChanged(totalQuantity);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Cart count güncellenirken hata: {ex.Message}");
+            }
+        }
+
     }
 }

@@ -17,7 +17,7 @@ namespace ShopOnline.Api.Repositories
 
         private async Task<bool> CartItemExists(int cartId, int productId)
         {
-            return await this.shopOnlineDbContext.CartItems.AnyAsync(c => c.CartId == cartId && c.ProductId == productId) ;
+            return await this.shopOnlineDbContext.CartItems.AnyAsync(c => c.CartId == cartId && c.ProductId == productId);
         }
         public async Task<CartItem> AddItem(CartItemToAddDto cartItemToAddDto)
         {
@@ -42,9 +42,17 @@ namespace ShopOnline.Api.Repositories
             return null;
         }
 
-        public Task<CartItem> DeleteItem(int id)
+        public async Task<CartItem> DeleteItem(int id)
         {
-            throw new NotImplementedException();
+            var item = await this.shopOnlineDbContext.CartItems.FindAsync(id);
+
+            if (item != null)
+            {
+                this.shopOnlineDbContext.CartItems.Remove(item);
+                await this.shopOnlineDbContext.SaveChangesAsync();
+            }
+
+            return item;
         }
 
         public async Task<CartItem> GetItem(int id)
@@ -77,9 +85,18 @@ namespace ShopOnline.Api.Repositories
                           }).ToListAsync();
         }
 
-        public Task<CartItem> UpdateQty(int id, CartItemQtyUpdateDto cartItemQtyUpdateDto)
+        public async Task<CartItem> UpdateQty(int id, CartItemQtyUpdateDto cartItemQtyUpdateDto)
         {
-            throw new NotImplementedException();
+            var item = await this.shopOnlineDbContext.CartItems.FindAsync(id);
+
+            if (item != null)
+            {
+                item.Qty = cartItemQtyUpdateDto.Qty;
+                await this.shopOnlineDbContext.SaveChangesAsync();
+                return item;
+            }
+
+            return null;
         }
     }
 }
