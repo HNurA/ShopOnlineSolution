@@ -12,30 +12,49 @@ namespace ShopOnline.Web.Pages
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
-        public IEnumerable<ProductDto> Products { get; set; }
+        [Inject]
+        public IManageProductsLocalStorageService ManageProductsLocalStorageService { get; set; }
+
+        [Inject]
+        public IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        public IEnumerable<ProductDto> Products { get; set; }
         public string ErrorMessage { get; set; }
+        protected bool isLoaded { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
-            try
+            // LocalStorage çağrısı yok - boş bırak
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender && !isLoaded)
             {
-                Products = await ProductService.GetItems();
+                try
+                {
+                    await ClearLocalStorage();
 
-                var shoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
-                var totalQty = shoppingCartItems.Sum(i => i.Qty);
+                    Products = await ManageProductsLocalStorageService.GetCollection();
 
-                ShoppingCartService.RaiseEventOnShoppingCartChanged(totalQty);
+                    var shoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
+                    var totalQty = shoppingCartItems.Sum(i => i.Qty);
+
+                    ShoppingCartService.RaiseEventOnShoppingCartChanged(totalQty);
+
+                    isLoaded = true;
+                    StateHasChanged();
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = ex.Message;
+                    isLoaded = true;
+                    StateHasChanged();
+                }
             }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
-
-            }
-
         }
 
         protected IOrderedEnumerable<IGrouping<int, ProductDto>> GetGroupedProductsByCategory()
@@ -45,9 +64,16 @@ namespace ShopOnline.Web.Pages
                    orderby prodByCatGroup.Key
                    select prodByCatGroup;
         }
+
         protected string GetCategoryName(IGrouping<int, ProductDto> groupedProductDtos)
         {
             return groupedProductDtos.FirstOrDefault(pg => pg.CategoryId == groupedProductDtos.Key).CategoryName;
+        }
+
+        private async Task ClearLocalStorage()
+        {
+            await ManageProductsLocalStorageService.RemoveCollection();
+            await ManageCartItemsLocalStorageService.RemoveCollection();
         }
     }
 }

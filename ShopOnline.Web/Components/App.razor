@@ -19,7 +19,67 @@
 
 <body>
     <Routes />
+
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R&currency=USD"></script>
+
+    <!-- Shopping Cart Functions -->
     <script src="js/ShoppingCartFunctions.js"></script>
+
+    <!-- PayPal Integration -->
+    <script>
+        window.initPayPalButton = function() {
+            console.log("Initializing PayPal button...");
+
+            var description = document.querySelector('#smart-button-container #description');
+            var amount = document.querySelector('#smart-button-container #amount');
+
+            if (!description || !amount) {
+                console.log("Description or amount element not found");
+                return;
+            }
+
+            console.log("PayPal values - Description:", description.value, "Amount:", amount.value);
+
+            var purchase_units = [];
+            purchase_units[0] = {};
+            purchase_units[0].amount = {};
+
+            paypal.Buttons({
+                style: {
+                    color: 'gold',
+                    shape: 'rect',
+                    label: 'paypal',
+                    layout: 'vertical',
+                },
+
+                createOrder: function (data, actions) {
+                    purchase_units[0].description = description.value;
+                    purchase_units[0].amount.value = amount.value;
+
+                    return actions.order.create({
+                        purchase_units: purchase_units,
+                    });
+                },
+
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (orderData) {
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        const element = document.getElementById('paypal-button-container');
+                        element.innerHTML = '';
+                        element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    });
+                },
+
+                onError: function (err) {
+                    console.log("PayPal Error:", err);
+                }
+            }).render('#paypal-button-container');
+        };
+
+        console.log("PayPal integration loaded!");
+    </script>
+
     <script src="_framework/blazor.web.js"></script>
 </body>
 

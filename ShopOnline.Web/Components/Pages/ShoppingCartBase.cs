@@ -2,41 +2,56 @@
 using Microsoft.JSInterop;
 using ShopOnline.Models.Dtos;
 using ShopOnline.Web.Services.Contracts;
+using System.Threading.Tasks;
 
 namespace ShopOnline.Web.Components.Pages
 {
-    public class ShoppingCartBase:ComponentBase
+    public class ShoppingCartBase : ComponentBase
     {
         [Inject]
-        public IJSRuntime Js {  get; set; }
+        public IJSRuntime Js { get; set; }
 
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
+        [Inject]
+        public IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
+
         public List<CartItemDto> ShoppingCartItems { get; set; }
-
         public string ErrorMessage { get; set; }
-
         protected string TotalPrice { get; set; }
         protected int TotalQuantity { get; set; }
+        protected bool isLoaded { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
-            try
+            // LocalStorage çağrısı yok - boş bırak
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender && !isLoaded)
             {
-                ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
-                CartChanged();
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
+                try
+                {
+                    ShoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
+                    CartChanged();
+
+                    isLoaded = true;
+                    StateHasChanged();
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = ex.Message;
+                    isLoaded = true;
+                    StateHasChanged();
+                }
             }
         }
 
         protected async Task DeleteCartItem_Click(int id)
         {
             var cartItemDto = await ShoppingCartService.DeleteItem(id);
-
             RemoveCartItem(id);
             CartChanged();
         }
@@ -45,7 +60,7 @@ namespace ShopOnline.Web.Components.Pages
         {
             try
             {
-                if (qty >0)
+                if (qty > 0)
                 {
                     var updateItemDto = new CartItemQtyUpdateDto
                     {
@@ -54,17 +69,13 @@ namespace ShopOnline.Web.Components.Pages
                     };
 
                     var returnedUpdateItemDto = await this.ShoppingCartService.UpdateQty(updateItemDto);
-
-                    UpdateItemTotalPrice(returnedUpdateItemDto);
-                    
+                    await UpdateItemTotalPrice(returnedUpdateItemDto);
                     CartChanged();
-
                     await MakeUpdateQtyButtonVisible(id, false);
                 }
                 else
                 {
                     var item = this.ShoppingCartItems.FirstOrDefault(i => i.Id == id);
-
                     if (item != null)
                     {
                         item.Qty = 1;
@@ -74,7 +85,6 @@ namespace ShopOnline.Web.Components.Pages
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -89,14 +99,14 @@ namespace ShopOnline.Web.Components.Pages
             await Js.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
         }
 
-        private void UpdateItemTotalPrice(CartItemDto cartItemDto)
+        private async Task UpdateItemTotalPrice(CartItemDto cartItemDto)
         {
             var item = GetCartItem(cartItemDto.Id);
-
             if (item != null)
             {
                 item.TotalPrice = cartItemDto.Price * cartItemDto.Qty;
             }
+            await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems);
         }
 
         private void CalculateCartSummaryTotals()
@@ -120,11 +130,11 @@ namespace ShopOnline.Web.Components.Pages
             return ShoppingCartItems.FirstOrDefault(i => i.Id == id);
         }
 
-        private void RemoveCartItem(int id)
+        private async Task RemoveCartItem(int id)
         {
             var cartItemDto = GetCartItem(id);
-
             ShoppingCartItems.Remove(cartItemDto);
+            await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems);
         }
 
         private void CartChanged()

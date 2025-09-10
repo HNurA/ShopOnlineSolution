@@ -1,4 +1,5 @@
-﻿using ShopOnline.Web.Components;
+﻿using Blazored.LocalStorage;
+using ShopOnline.Web.Components;
 using ShopOnline.Web.Services;
 using ShopOnline.Web.Services.Contracts;
 
@@ -17,6 +18,11 @@ builder.Services.AddScoped(sp => new HttpClient
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+
+builder.Services.AddBlazoredLocalStorage();
+
+builder.Services.AddScoped<IManageProductsLocalStorageService, ManageProductsLocalStorageService>();
+builder.Services.AddScoped<IManageCartItemsLocalStorageService, ManageCartItemsLocalStorageService>();
 
 var app = builder.Build();
 

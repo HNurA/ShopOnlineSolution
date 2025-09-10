@@ -1,17 +1,23 @@
 ﻿@inherits DisplayProductsBase
 
-@foreach (var item in Products)
-{
-    <div class="col-md-3 mb-2">
-        <a href="/ProductDetails/@item.Id">
-            <div class="card">
-                <img class="img-thumbnail" src="@item.ImageURL">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">@item.Name</h5>
-                    <p class="card-text"><b>@item.Price.ToString("C")</b></p>
+<div class="row">
+    @foreach (var item in Products)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+     
+                <NavLink href="@($"/ProductDetails/{item.Id}")" class="text-decoration-none">
+                <div class="card h-100 shadow-sm">
+                    <img class="card-img-top" src="@item.ImageURL" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            @item.Name
+                        </h5>
+                        <p class="card-text mt-auto">
+                            <b>@item.Price.ToString("C")</b>
+                        </p>
+                    </div>
                 </div>
-
-            </div>
-        </a>
-    </div>
-}
+                </NavLink>
+        </div>
+    }
+</div>
