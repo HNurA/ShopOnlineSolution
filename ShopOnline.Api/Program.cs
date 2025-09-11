@@ -1,8 +1,12 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using ShopOnline.Api.Data;
 using ShopOnline.Api.Repositories;
 using ShopOnline.Api.Repositories.Contracts;
+using ShopOnline.Api.Services;
+using ShopOnline.Api.Services.Contracts;
+using ShopOnline.Api.Validators;
+using ShopOnline.Api.Validators.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +24,14 @@ builder.Services.AddDbContextPool<ShopOnlineDbContext>(options => options.UseSql
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
+// Yeni: Service kayıtları
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+
+// Yeni: Validator kayıtları
+builder.Services.AddScoped<IProductValidator, ProductValidator>();
+builder.Services.AddScoped<ICartItemValidator, CartItemValidator>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,10 +47,12 @@ app.UseCors(policy =>
     .WithHeaders(HeaderNames.ContentType)
 );
 
+// Exception Handling Middleware 
+app.UseMiddleware<ShopOnline.Api.Middleware.ExceptionHandlingMiddleware>();
+
+// Mevcut middleware'ler
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

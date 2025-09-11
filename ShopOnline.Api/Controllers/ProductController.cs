@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Api.Entities;
 using ShopOnline.Api.Extensions;
 using ShopOnline.Api.Repositories.Contracts;
+using ShopOnline.Api.Services.Contracts;
 using ShopOnline.Models.Dtos;
 
 namespace ShopOnline.Api.Controllers
@@ -11,35 +12,31 @@ namespace ShopOnline.Api.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository productRepository;
+        private readonly IProductService productService;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductService productService)
         {
-            this.productRepository = productRepository;
+            this.productService = productService;
         }
 
-        [HttpGet] //attribute
+        [HttpGet] 
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetItems()
         {
             try
             {
-                var products = await this.productRepository.GetItems();
+                var productDtos = await this.productService.GetProducts();
 
-                if (products == null)
+                if (productDtos == null || !productDtos.Any())
                 {
                     return NotFound();
                 }
-                else
-                {
-                    var productDtos = products.ConvertToDto();
 
-                    return Ok(productDtos);
-                }
+                return Ok(productDtos);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                                 "Error retrieving data from the database!");
+                                  "Error retrieving data from the database!");
             }
         }
 
@@ -48,20 +45,18 @@ namespace ShopOnline.Api.Controllers
         {
             try
             {
-                var product = await this.productRepository.GetItem(id);
+                var productDto = await this.productService.GetProduct(id);
 
-                if (product == null)
+                if (productDto == null)
                 {
                     return BadRequest();
                 }
                 else
                 {
-                    var productDto = product.ConvertToDto();
-
                     return Ok(productDto);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                  "Error retrieving data from the database!");
@@ -74,12 +69,16 @@ namespace ShopOnline.Api.Controllers
         {
             try
             {
-                var productCategories = await productRepository.GetCategories();
-                var productCategoryDto = productCategories.ConvertToDto();
+                var productCategoryDtos = await productService.GetProductCategories();
 
-                return Ok(productCategoryDto);
+                if(productCategoryDtos == null || !productCategoryDtos.Any())
+                { 
+                    return NotFound(); 
+                }
+
+                return Ok(productCategoryDtos);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                   "Error retrieving data from the database");
@@ -92,12 +91,16 @@ namespace ShopOnline.Api.Controllers
         {
             try
             {
-                var products = await productRepository.GetItemsByCategory(categoryId);
-                var productDtos = products.ConvertToDto();
+                var productDtos = await productService.GetProductsByCategory(categoryId);
+
+                if (productDtos == null || !productDtos.Any())
+                {
+                    return NotFound();
+                }
 
                 return Ok(productDtos);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                                   "Error retrieving data from the database");
