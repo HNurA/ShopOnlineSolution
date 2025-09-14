@@ -20,8 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShopOnline.Models\ShopOnline.Models.csproj" />
 	<ProjectReference Include="..\ShopOnline.Models\ShopOnline.Models.csproj" />
+	<ProjectReference Include="..\ShopOnline.DataAccess\ShopOnline.DataAccess.csproj" />
+	<ProjectReference Include="..\ShopOnline.Business\ShopOnline.Business.csproj" />
   </ItemGroup>
 
 </Project>

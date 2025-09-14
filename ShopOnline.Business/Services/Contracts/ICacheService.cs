@@ -1,4 +1,4 @@
-﻿namespace ShopOnline.Api.Services.Contracts
+﻿namespace ShopOnline.Business.Services.Contracts
 {
     public interface ICacheService
     {

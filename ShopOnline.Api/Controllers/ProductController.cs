@@ -2,9 +2,9 @@
 ** exception handling middleware de hepsi kontrol ediliyor */
 
 using Microsoft.AspNetCore.Mvc;
-using ShopOnline.Api.Entities;
-using ShopOnline.Api.Services.Contracts;
+using ShopOnline.Business.Services.Contracts;
 using ShopOnline.Models.Dtos;
+using ShopOnline.DataAccess.Entities;
 
 namespace ShopOnline.Api.Controllers
 {

@@ -1,9 +1,9 @@
-﻿using ShopOnline.Api.Repositories.Contracts;
-using ShopOnline.Api.Services.Contracts;
-using ShopOnline.Api.Extensions;
+﻿using ShopOnline.DataAccess.Repositories.Contracts;
+using ShopOnline.Business.Services.Contracts;
+using ShopOnline.Business.Extensions;
 using ShopOnline.Models.Dtos;
-using ShopOnline.Validation.Validators.Contracts;
 using ShopOnline.Business.Validators.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace ShopOnline.Business.Services
 {

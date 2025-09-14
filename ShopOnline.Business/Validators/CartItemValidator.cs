@@ -1,10 +1,8 @@
 ﻿//Business Logic ve Validation ayrılmalı
-
-using Microsoft.AspNetCore.Mvc;
 using ShopOnline.DataAccess.Repositories.Contracts;
 using ShopOnline.Business.Services.Contracts;
-using ShopOnline.Models.Dtos;
 using ShopOnline.Business.Validators.Contracts;
+using ShopOnline.Models.Dtos;
 
 namespace ShopOnline.Business.Validators
 {

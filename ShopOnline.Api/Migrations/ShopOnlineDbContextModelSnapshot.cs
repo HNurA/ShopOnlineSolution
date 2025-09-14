@@ -3,9 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShopOnline.Api.Data;
-
-#nullable disable
+using ShopOnline.DataAccess.Data;
+using ShopOnline.DataAccess.Entities;
 
 namespace ShopOnline.Api.Migrations
 {

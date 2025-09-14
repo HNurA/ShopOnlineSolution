@@ -1,9 +1,10 @@
 ﻿// CacheService.cs
 using Microsoft.Extensions.Caching.Memory;
-using ShopOnline.Api.Services.Contracts;
+using Microsoft.Extensions.Logging;
+using ShopOnline.Business.Services.Contracts;
 using System.Collections.Concurrent;
 
-namespace ShopOnline.Api.Services
+namespace ShopOnline.Business.Services
 {
     public class CacheService : ICacheService
     {

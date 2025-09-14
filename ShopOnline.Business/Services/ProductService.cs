@@ -1,9 +1,8 @@
 ﻿// ProductService.cs - Cache ile güncellenmiş versiyon
-using ShopOnline.Business.Services.Contracts;
-using ShopOnline.Models.Dtos;
-using ShopOnline.Models.Extensions;
-using ShopOnline.Caching.Services.Contracts;
 using ShopOnline.DataAccess.Repositories.Contracts;
+using ShopOnline.Business.Services.Contracts;
+using ShopOnline.Business.Extensions;
+using ShopOnline.Models.Dtos;
 using Microsoft.Extensions.Logging;
 
 namespace ShopOnline.Business.Services

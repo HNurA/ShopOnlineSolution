@@ -1,5 +1,5 @@
-﻿using ShopOnline.Business.Validators.Contracts;
-using ShopOnline.DataAccess.Repositories.Contracts;
+﻿using ShopOnline.DataAccess.Repositories.Contracts;
+using ShopOnline.Business.Validators.Contracts;
 
 namespace ShopOnline.Business.Validators
 {

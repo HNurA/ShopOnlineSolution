@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopOnline.Api.Services.Contracts;
+using ShopOnline.Business.Services.Contracts;
 using ShopOnline.Models.Dtos;
 
 namespace ShopOnline.Api.Controllers
