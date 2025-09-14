@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/* try-catch blokları gitti
+** exception handling middleware de hepsi kontrol ediliyor */
+
 using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Api.Entities;
-using ShopOnline.Api.Extensions;
-using ShopOnline.Api.Repositories.Contracts;
 using ShopOnline.Api.Services.Contracts;
 using ShopOnline.Models.Dtos;
 
@@ -22,89 +22,56 @@ namespace ShopOnline.Api.Controllers
         [HttpGet] 
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetItems()
         {
-            try
-            {
-                var productDtos = await this.productService.GetProducts();
+            var productDtos = await this.productService.GetProducts();
 
-                if (productDtos == null || !productDtos.Any())
-                {
-                    return NotFound();
-                }
-
-                return Ok(productDtos);
-            }
-            catch (Exception ex)
+            if (productDtos == null || !productDtos.Any())
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  "Error retrieving data from the database!");
+                return NotFound("No products found");
             }
+
+            return Ok(productDtos);
         }
 
         [HttpGet("{id:int}")] 
         public async Task<ActionResult<ProductDto>> GetItem(int id)
         {
-            try
-            {
-                var productDto = await this.productService.GetProduct(id);
+            var productDto = await this.productService.GetProduct(id);
 
-                if (productDto == null)
-                {
-                    return BadRequest();
-                }
-                else
-                {
-                    return Ok(productDto);
-                }
-            }
-            catch (Exception ex)
+            if (productDto == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                 "Error retrieving data from the database!");
+                return NotFound($"Product with ID {id} not found");
             }
+            
+            return Ok(productDto);
+
         }
 
         [HttpGet]
         [Route(nameof(GetProductCategories))]
         public async Task<ActionResult<IEnumerable<ProductCategory>>> GetProductCategories()
         {
-            try
-            {
-                var productCategoryDtos = await productService.GetProductCategories();
+            var productCategoryDtos = await productService.GetProductCategories();
 
-                if(productCategoryDtos == null || !productCategoryDtos.Any())
-                { 
-                    return NotFound(); 
-                }
-
-                return Ok(productCategoryDtos);
-            }
-            catch (Exception ex)
+            if (productCategoryDtos == null || !productCategoryDtos.Any())
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  "Error retrieving data from the database");
+                return NotFound();
             }
+
+            return Ok(productCategoryDtos);
         }
 
         [HttpGet]
         [Route("{categoryId}/GetItemsByCategory")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetItemsByCategory(int categoryId)
         {
-            try
-            {
-                var productDtos = await productService.GetProductsByCategory(categoryId);
+            var productDtos = await productService.GetProductsByCategory(categoryId);
 
-                if (productDtos == null || !productDtos.Any())
-                {
-                    return NotFound();
-                }
-
-                return Ok(productDtos);
-            }
-            catch (Exception ex)
+            if (productDtos == null || !productDtos.Any())
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  "Error retrieving data from the database");
+                return NotFound();
             }
+
+            return Ok(productDtos);
         }
     }
 }

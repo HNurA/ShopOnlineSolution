@@ -1,10 +1,12 @@
 ﻿// ProductService.cs - Cache ile güncellenmiş versiyon
-using ShopOnline.Api.Repositories.Contracts;
-using ShopOnline.Api.Services.Contracts;
-using ShopOnline.Api.Extensions;
+using ShopOnline.Business.Services.Contracts;
 using ShopOnline.Models.Dtos;
+using ShopOnline.Models.Extensions;
+using ShopOnline.Caching.Services.Contracts;
+using ShopOnline.DataAccess.Repositories.Contracts;
+using Microsoft.Extensions.Logging;
 
-namespace ShopOnline.Api.Services
+namespace ShopOnline.Business.Services
 {
     public class ProductService : IProductService
     {

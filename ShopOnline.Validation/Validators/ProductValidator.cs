@@ -1,7 +1,7 @@
-﻿using ShopOnline.Api.Repositories.Contracts;
-using ShopOnline.Api.Validators.Contracts;
+﻿using ShopOnline.DataAccess.Repositories.Contracts;
+using ShopOnline.Validation.Validators.Contracts;
 
-namespace ShopOnline.Api.Validators
+namespace ShopOnline.Validation.Validators
 {
     public class ProductValidator : IProductValidator
     {

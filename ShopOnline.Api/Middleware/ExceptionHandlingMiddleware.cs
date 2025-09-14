@@ -1,4 +1,7 @@
-﻿using ShopOnline.Api.Models;
+﻿/*It's common for a class to throw the same exception from different places in its implementation. 
+** To avoid excessive code, create a helper method that creates the exception and returns it.*/
+ 
+using ShopOnline.Api.Models;
 using System.Net;
 using System.Text.Json;
 

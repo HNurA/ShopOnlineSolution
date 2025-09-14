@@ -2,9 +2,10 @@
 using ShopOnline.Api.Services.Contracts;
 using ShopOnline.Api.Extensions;
 using ShopOnline.Models.Dtos;
-using ShopOnline.Api.Validators.Contracts;
+using ShopOnline.Validation.Validators.Contracts;
+using ShopOnline.Business.Validators.Contracts;
 
-namespace ShopOnline.Api.Services
+namespace ShopOnline.Business.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
