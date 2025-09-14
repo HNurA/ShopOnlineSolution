@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Caching.Memory;
 using ShopOnline.Api.Services.Contracts;
 using System.Collections.Concurrent;
-using System.Text.Json;
 
 namespace ShopOnline.Api.Services
 {
