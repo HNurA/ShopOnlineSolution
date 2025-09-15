@@ -8,7 +8,7 @@ using ShopOnline.DataAccess.Data;
 
 #nullable disable
 
-namespace ShopOnline.Api.Migrations
+namespace ShopOnline.DataAccess.Migrations
 {
     [DbContext(typeof(ShopOnlineDbContext))]
     [Migration("20250910065613_AddProductCategoryIcons")]

@@ -2,20 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopOnline.DataAccess.Data;
+using ShopOnline.DataAccess.Entities;
 
-#nullable disable
-
-namespace ShopOnline.Api.Migrations
+namespace ShopOnline.DataAccess.Migrations
 {
     [DbContext(typeof(ShopOnlineDbContext))]
-    [Migration("20250904135410_InitialCreate")]
-    partial class InitialCreate
+    partial class ShopOnlineDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -348,6 +344,10 @@ namespace ShopOnline.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("IconCSS")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -360,21 +360,25 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
+                            IconCSS = "fas fa-spa",
                             Name = "Beauty"
                         },
                         new
                         {
                             Id = 2,
+                            IconCSS = "fas fa-couch",
                             Name = "Furniture"
                         },
                         new
                         {
                             Id = 3,
+                            IconCSS = "fas fa-headphones",
                             Name = "Electronics"
                         },
                         new
                         {
                             Id = 4,
+                            IconCSS = "fas fa-shoe-prints",
                             Name = "Shoes"
                         });
                 });

@@ -23,7 +23,7 @@ builder.Services.AddDbContext<ShopOnlineDbContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
-// ⭐ CACHE KAYITLARI - BU SATIRLARI EKLEYİN ⭐
+// Cache kayıtları
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<ICacheService, CacheService>();
 
@@ -50,6 +50,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ShopOnline.Api.Middleware.ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

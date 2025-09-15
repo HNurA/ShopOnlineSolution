@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ShopOnline.Api.Migrations
+namespace ShopOnline.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddProductCategoryIcons : Migration
