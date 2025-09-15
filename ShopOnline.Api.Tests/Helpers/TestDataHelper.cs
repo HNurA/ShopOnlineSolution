@@ -1,5 +1,5 @@
 ﻿// Helpers/TestDataHelper.cs
-using ShopOnline.Api.Entities;
+using ShopOnline.DataAccess.Entities;
 using ShopOnline.Models.Dtos;
 
 namespace ShopOnline.Api.Tests.Helpers

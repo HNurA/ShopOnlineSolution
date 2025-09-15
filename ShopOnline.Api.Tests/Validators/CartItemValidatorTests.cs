@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
-using Moq;
-using ShopOnline.Api.Repositories.Contracts;
+using ShopOnline.DataAccess.Repositories.Contracts;
 using ShopOnline.Api.Tests.Helpers;
-using ShopOnline.Api.Validators;
 using ShopOnline.Business.Validators;
-using ShopOnline.Validation.Validators;
+using Moq;
 
 namespace ShopOnline.Api.Tests.Validators
 {
@@ -51,7 +49,7 @@ namespace ShopOnline.Api.Tests.Validators
 
             mockProductRepository
                 .Setup(x => x.GetItem(cartItemToAdd.ProductId))
-                .ReturnsAsync((ShopOnline.Api.Entities.Product)null);
+                .ReturnsAsync((ShopOnline.DataAccess.Entities.Product)null);
 
             // Act
             var result = await cartItemValidator.ValidateAddItem(cartItemToAdd);

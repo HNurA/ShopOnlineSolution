@@ -1,14 +1,13 @@
 ﻿// Services/ProductServiceTests.cs
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Moq;
-using ShopOnline.Api.Entities;
-using ShopOnline.Api.Repositories.Contracts;
-using ShopOnline.Api.Services;
-using ShopOnline.Api.Services.Contracts;
+using ShopOnline.DataAccess.Entities;
+using ShopOnline.DataAccess.Repositories.Contracts;
+using ShopOnline.Business.Services;
+using ShopOnline.Business.Services.Contracts;
 using ShopOnline.Api.Tests.Helpers;
-using ShopOnline.Caching.Services.Contracts;
 using ShopOnline.Models.Dtos;
+using Moq;
 
 namespace ShopOnline.Api.Tests.Services
 {

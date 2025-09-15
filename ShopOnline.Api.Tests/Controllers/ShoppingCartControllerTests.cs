@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using ShopOnline.Api.Controllers;
-using ShopOnline.Api.Services.Contracts;
+using ShopOnline.Business.Services.Contracts;
 using ShopOnline.Api.Tests.Helpers;
 using ShopOnline.Models.Dtos;
+using Moq;
 
 namespace ShopOnline.Api.Tests.Controllers
 {

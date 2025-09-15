@@ -1,10 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Moq;
-using ShopOnline.Api.Services;
-using ShopOnline.Caching.Services;
+using ShopOnline.Business.Services;
 using ShopOnline.Models.Dtos;
+using Moq;
 
 namespace ShopOnline.Api.Tests.Services
 {
